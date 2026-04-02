@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,24 +16,24 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DocumentRecord {
+public class DocumentRecord implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id; // Using UUID makes the document ID unguessable for security
+    // Notice: removed @GeneratedValue. We are in full control of the ID now!
+    private UUID id;
 
     @Column(nullable = false)
-    private String recipientId; // e.g., Student ID or Matrix Number
+    private String recipientId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DocumentType documentType;
 
     @Column(nullable = false, unique = true, updatable = false)
-    private String documentHash; // SHA-256 hash to prove the document hasn't been tampered with
+    private String documentHash;
 
     @Column(nullable = false)
-    private String storagePath; // Path where the PDF is saved (Local or S3)
+    private String storagePath;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -42,9 +43,25 @@ public class DocumentRecord {
     private LocalDateTime issuedAt;
 
     @Column
-    private LocalDateTime expiresAt; // Nullable; some documents don't expire
+    private LocalDateTime expiresAt;
 
-    // This automatically sets the issue date right before it saves to the database
+    // --- THE FIX ---
+    @Transient // Tells JPA not to save this boolean to the database
+    @Builder.Default
+    private boolean isNewRecord = true;
+
+    @Override
+    public boolean isNew() {
+        return isNewRecord;
+    }
+
+    @PostPersist
+    @PostLoad
+    protected void markNotNew() {
+        this.isNewRecord = false;
+    }
+    // ---------------
+
     @PrePersist
     protected void onCreate() {
         this.issuedAt = LocalDateTime.now();
@@ -52,5 +69,4 @@ public class DocumentRecord {
             this.status = DocumentStatus.VALID;
         }
     }
-    
 }
