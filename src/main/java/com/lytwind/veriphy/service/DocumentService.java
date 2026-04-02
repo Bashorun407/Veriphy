@@ -9,6 +9,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -88,5 +89,21 @@ public class DocumentService {
                 .build();
 
         return repository.save(record);
+    }
+
+    // Add this inside DocumentService.java
+    public DocumentRecord verifyDocument(MultipartFile uploadedFile) throws Exception {
+        // 1. Get the bytes of the uploaded file
+        byte[] fileBytes = uploadedFile.getBytes();
+
+        // 2. Generate the SHA-256 hash of the uploaded file
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(fileBytes);
+        String uploadedHash = HexFormat.of().formatHex(hashBytes);
+
+        // 3. Check if this hash exists in our database
+        // If it was altered even slightly, the hash will change, and this will fail!
+        return repository.findByDocumentHash(uploadedHash)
+                .orElseThrow(() -> new RuntimeException("Verification Failed: Document is invalid, altered, or does not exist."));
     }
 }
