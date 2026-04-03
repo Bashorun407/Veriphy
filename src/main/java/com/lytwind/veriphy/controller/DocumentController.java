@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/documents")
 @RequiredArgsConstructor
@@ -46,6 +48,17 @@ public class DocumentController {
             return ResponseEntity.ok(record);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
+        }
+    }
+
+    // Add this inside DocumentController.java
+    @PatchMapping("/{id}/revoke")
+    public ResponseEntity<?> revokeDocument(@PathVariable UUID id) {
+        try {
+            DocumentRecord record = documentService.revokeDocument(id);
+            return ResponseEntity.ok(" SUCCESS: Document " + id + " has been successfully REVOKED.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 }

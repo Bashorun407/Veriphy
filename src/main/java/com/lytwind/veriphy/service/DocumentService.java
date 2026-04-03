@@ -42,6 +42,21 @@ public class DocumentService {
         Files.createDirectories(Paths.get(storageDirectory));
     }
 
+    public DocumentRecord verifyDocument(MultipartFile uploadedFile) throws Exception {
+        // 1. Get the bytes of the uploaded file
+        byte[] fileBytes = uploadedFile.getBytes();
+
+        // 2. Generate the SHA-256 hash of the uploaded file
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(fileBytes);
+        String uploadedHash = HexFormat.of().formatHex(hashBytes);
+
+        // 3. Check if this hash exists in our database
+        // If it was altered even slightly, the hash will change, and this will fail!
+        return repository.findByDocumentHash(uploadedHash)
+                .orElseThrow(() -> new RuntimeException("Verification Failed: Document is invalid, altered, or does not exist."));
+    }
+
     public DocumentRecord issueDocument(String recipientId, DocumentType type) throws Exception {
         // 1. Pre-generate the Document UUID so we can put it in the QR code link
         UUID documentId = UUID.randomUUID();
@@ -91,19 +106,22 @@ public class DocumentService {
         return repository.save(record);
     }
 
-    // Add this inside DocumentService.java
-    public DocumentRecord verifyDocument(MultipartFile uploadedFile) throws Exception {
-        // 1. Get the bytes of the uploaded file
-        byte[] fileBytes = uploadedFile.getBytes();
 
-        // 2. Generate the SHA-256 hash of the uploaded file
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(fileBytes);
-        String uploadedHash = HexFormat.of().formatHex(hashBytes);
+    public DocumentRecord revokeDocument(UUID documentId) {
+        // 1. Find the document in the database
+        DocumentRecord record = repository.findById(documentId)
+                .orElseThrow(() -> new RuntimeException("Document not found with ID: " + documentId));
 
-        // 3. Check if this hash exists in our database
-        // If it was altered even slightly, the hash will change, and this will fail!
-        return repository.findByDocumentHash(uploadedHash)
-                .orElseThrow(() -> new RuntimeException("Verification Failed: Document is invalid, altered, or does not exist."));
+        // 2. Prevent redundant updates
+        if (record.getStatus() == DocumentStatus.REVOKED) {
+            throw new RuntimeException("This document has already been revoked.");
+        }
+
+        // 3. Change the status
+        record.setStatus(DocumentStatus.REVOKED);
+
+        // 4. Save the updated record.
+        // Thanks to our Persistable interface setup, Spring Data JPA knows to execute an UPDATE query here!
+        return repository.save(record);
     }
 }
