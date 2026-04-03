@@ -102,7 +102,7 @@ public class DocumentController {
                     .body(resource);
 
         } catch (Exception e) {
-            return ResponseEntity.status(403).body("❌ Download Failed: Link is invalid or has expired.");
+            return ResponseEntity.status(403).body("Download Failed: Link is invalid or has expired.");
         }
     }
 }
