@@ -8,6 +8,8 @@ import com.lytwind.veriphy.util.QrCodeGenerator;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
@@ -123,5 +125,20 @@ public class DocumentService {
         // 4. Save the updated record.
         // Thanks to our Persistable interface setup, Spring Data JPA knows to execute an UPDATE query here!
         return repository.save(record);
+    }
+
+    // from JwtService
+    public Resource getDocumentAsResource(UUID documentId) throws Exception {
+        DocumentRecord record = repository.findById(documentId)
+                .orElseThrow(() -> new RuntimeException("Document not found"));
+
+        Path filePath = Paths.get(record.getStoragePath());
+        Resource resource = new UrlResource(filePath.toUri());
+
+        if (resource.exists() || resource.isReadable()) {
+            return resource;
+        } else {
+            throw new RuntimeException("Could not read the file!");
+        }
     }
 }

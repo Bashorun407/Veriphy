@@ -22,13 +22,17 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless REST APIs
                 .authorizeHttpRequests(auth -> auth
-                        // RULE 1: Verification and Token generation are PUBLIC
-                        .requestMatchers("/api/v1/documents/verify", "/api/v1/auth/token").permitAll()
+                        // RULE 1: Verification, Token generation and Download are PUBLIC
+                        .requestMatchers("/api/v1/documents/verify",
+                                "/api/v1/auth/token",
+                                "/api/v1/documents/download").permitAll()
                         // RULE 2: Everything else (issue, revoke) requires authentication
+
                         .anyRequest().authenticated()
                 )
                 // Tell Spring we are using stateless JWTs, not server-side sessions
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Insert our custom JWT filter before the standard Spring filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
