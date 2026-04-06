@@ -53,6 +53,5 @@ application.
 ### 1. Introduction to Object Oriented Programming Link: https://distinction.app/public-certificate/f5be51a8-1689-4c93-870c-00349a482bdf
 
 
-### 2. Mastering Productivity, Collaboration & Problem Solving
-   for High-Performers Link: https://distinction.app/public-certificate/f4e0fda4-04b0-4de1-a606-c650920dc91e
+### 2. Mastering Productivity, Collaboration & Problem Solving for High-Performers Link: https://distinction.app/public-certificate/f4e0fda4-04b0-4de1-a606-c650920dc91e
 
