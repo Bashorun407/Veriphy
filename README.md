@@ -6,10 +6,10 @@ Project Description:
 This project implements a document issuance service that renders official PDFs (transcript/certificate) with QR code linking to a verification endpoint, stores files in object storage (locl/minio/S3-compatible), and issues time-limited download links. 
 It further includes hashings/signature metadata and an admin dashboard API to revoke documents.
 
-# Veriphy: Secure Document Issuance & Verification Microservice
+# Veriphy: Secure Document Issuance & Verification Service
 
 ##  Project Overview
-Veriphy is a production-grade backend microservice designed to solve the problem of academic and official document forgery. It provides a complete workflow for generating physical, QR-coded PDF documents (like transcripts and certificates) and mathematically proving their authenticity through an automated upload-and-verify API.
+Veriphy is a production-grade backend service designed to solve the problem of academic and official document forgery. It provides a complete workflow for generating physical, QR-coded PDF documents (like transcripts and certificates) and prove their authenticity through an automated upload-and-verify API.
 
 This project was built as the final deliverable for the **SAFIntern Program**.
 
@@ -45,70 +45,14 @@ When a document is issued, the *exact bytes* of the PDF are hashed and stored in
 * Postman (for API testing)
 
 ### 2. Database Configuration
-Create a new database in PostgreSQL:
-```sql
-CREATE DATABASE document_db;
-Update your application.properties (or application.yml) with your local database credentials:
+Create a new database in PostgreSQL and update the application.properties (or application.yaml) file and run the
+application.
+---
 
-Properties
-spring.datasource.username=postgres
-spring.datasource.password=your_password
-3. Running the Application
-Because this project uses Flyway, the database tables will be created automatically on startup.
+# Distinction Certificates
+### 1. Introduction to Object Oriented Programming Link: https://distinction.app/public-certificate/f5be51a8-1689-4c93-870c-00349a482bdf
 
-Bash
-mvn spring-boot:run
-API Documentation
-1. Issue a New Document
-Generates a new secure PDF, saves it locally, and stores the hash in the database.
 
-URL: /api/v1/documents/issue
+### 2. Mastering Productivity, Collaboration & Problem Solving
+   for High-Performers Link: https://distinction.app/public-certificate/f4e0fda4-04b0-4de1-a606-c650920dc91e
 
-Method: GET (Used for testing convenience)
-
-Parameters:
-
-studentId (String) - The ID of the recipient.
-
-type (Enum) - e.g., CERTIFICATE, TRANSCRIPT
-
-Example Request:http://localhost:8080/api/v1/documents/issue?studentId=MAT12345&type=CERTIFICATE
-
-Example Success Response:
-
-JSON
-{
-    "id": "a3930af0-2b45-4749-a786-e1291024c797",
-    "recipientId": "MAT12345",
-    "documentType": "CERTIFICATE",
-    "documentHash": "cf1b80998c863675fbd91a0063912b5188...",
-    "status": "VALID",
-    "issuedAt": "2026-04-02T21:06:10.793"
-}
-2. Verify an Uploaded Document
-Takes a physical PDF upload, re-hashes it, and verifies it against the secure database.
-
-URL: /api/v1/documents/verify
-
-Method: POST
-
-Content-Type: multipart/form-data
-
-Body Form-Data:
-
-Key: file (Type: File)
-
-Value: [Select the PDF file]
-
-Example Success Response: VERIFICATION SUCCESS: This is an authentic CERTIFICATE issued to MAT12345
-
-Example Failure Response (if document was altered): Verification Failed: Document is invalid, altered, or does not exist.
-
-Postman Collection
-A complete Postman collection is included in this repository to make evaluating the API instant and effortless.
-
-Open Postman.
-
-Click Import.
-
-Select the Veriphy_Postman_Collection.json file located in the root of this repository.
