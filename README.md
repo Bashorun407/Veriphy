@@ -55,3 +55,11 @@ application.
 
 ### 2. Mastering Productivity, Collaboration & Problem Solving for High-Performers Link: https://distinction.app/public-certificate/f4e0fda4-04b0-4de1-a606-c650920dc91e
 
+# Link to Hosted API (Render)
+### https://veriphy-43h5.onrender.com
+
+# Path to Project Slide:
+### https://github.com/Bashorun407/Veriphy/blob/58dbf82d85d9449d0b5bd24e4900577e84a7574e/docs/Veriphy%20Slides/Veriphy%20Slides.pdf
+
+# Path to Screenshot Folder:
+### https://github.com/Bashorun407/Veriphy/blob/eb3296d1e5e85e226cbf05f1d4c1669baa7e399a/src/main/resources/screenshots
