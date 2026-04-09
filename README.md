@@ -62,4 +62,4 @@ application.
 ### https://github.com/Bashorun407/Veriphy/blob/58dbf82d85d9449d0b5bd24e4900577e84a7574e/docs/Veriphy%20Slides/Veriphy%20Slides.pdf
 
 # Path to Screenshot Folder:
-### https://github.com/Bashorun407/Veriphy/blob/eb3296d1e5e85e226cbf05f1d4c1669baa7e399a/src/main/resources/screenshots
+### https://github.com/Bashorun407/Veriphy/tree/main/Screenshots
