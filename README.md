@@ -63,3 +63,6 @@ application.
 
 # Path to Screenshot Folder:
 ### https://github.com/Bashorun407/Veriphy/tree/main/Screenshots
+
+# Path to Entity Relationship Diagram (erd) Folder: 
+### https://github.com/Bashorun407/Veriphy/tree/main/erd
