@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class JwtService {
 
     // A secure, 256-bit Base64 encoded secret key.
-    // In production, this goes in your application.properties!
+    // In production, this goes in the application.properties!
     @Value("${jwt.secret:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}")
     private String secretKey;
 

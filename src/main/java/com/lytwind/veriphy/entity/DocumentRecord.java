@@ -19,7 +19,7 @@ import java.util.UUID;
 public class DocumentRecord implements Persistable<UUID> {
 
     @Id
-    // Notice: removed @GeneratedValue. We are in full control of the ID now!
+    // removed @GeneratedValue to fully control the UUID
     private UUID id;
 
     @Column(nullable = false)
@@ -45,7 +45,6 @@ public class DocumentRecord implements Persistable<UUID> {
     @Column
     private LocalDateTime expiresAt;
 
-    // --- THE FIX ---
     @Transient // Tells JPA not to save this boolean to the database
     @Builder.Default
     private boolean isNewRecord = true;

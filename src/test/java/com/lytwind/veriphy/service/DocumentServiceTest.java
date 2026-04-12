@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class DocumentServiceTest {
-    // @Mock creates a "fake" repository so we don't touch the real PostgreSQL database
+    // @Mock creates a "fake" repository
     @Mock
     private DocumentRecordRepository repository;
 

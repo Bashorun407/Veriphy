@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface DocumentRecordRepository extends JpaRepository<DocumentRecord, UUID> {
-    // We will use this in the final step to verify uploaded PDFs!
+    // This is used in the final step to verify uploaded PDFs
     Optional<DocumentRecord> findByDocumentHash(String documentHash);
 }

@@ -29,7 +29,7 @@ public class DocumentController {
         try {
             DocumentRecord record = documentService.verifyDocument(file);
 
-            // If we get here, the document is mathematically proven to be authentic!
+            // At this point, the document is mathematically proven to be authentic
             if (record.getStatus() == DocumentStatus.VALID) {
                 return ResponseEntity.ok("VERIFICATION SUCCESS: This is an authentic " + record.getDocumentType()
                         + " issued to " + record.getRecipientId());
@@ -43,7 +43,7 @@ public class DocumentController {
         }
     }
 
-    // A simple GET request to trigger document creation for testing
+    // A GET request to trigger document creation for testing
     @GetMapping("/issue")
     public ResponseEntity<?> issueTestDocument(
             @RequestParam String studentId,
@@ -56,7 +56,6 @@ public class DocumentController {
         }
     }
 
-    // Add this inside DocumentController.java
     @PatchMapping("/{id}/revoke")
     public ResponseEntity<?> revokeDocument(@PathVariable UUID id) {
         try {
@@ -66,8 +65,6 @@ public class DocumentController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
-
-    // Add this to DocumentController.java
 
     // Endpoint 1: Admin generates the expiring link
     @GetMapping("/{id}/download-link")

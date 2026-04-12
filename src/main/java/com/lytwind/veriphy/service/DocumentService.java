@@ -53,7 +53,7 @@ public class DocumentService {
         byte[] hashBytes = digest.digest(fileBytes);
         String uploadedHash = HexFormat.of().formatHex(hashBytes);
 
-        // 3. Check if this hash exists in our database
+        // 3. Check if this hash exists in the database
         // If it was altered even slightly, the hash will change, and this will fail!
         return repository.findByDocumentHash(uploadedHash)
                 .orElseThrow(() -> new RuntimeException("Verification Failed: Document is invalid, altered, or does not exist."));
