@@ -49,6 +49,8 @@ Create a new database in PostgreSQL and update the application.properties (or ap
 application.
 ---
 
+# Path to the Documentation
+### https://github.com/Bashorun407/Veriphy/blob/main/API_DOCs.md
 # Distinction Certificates
 ### 1. Introduction to Object Oriented Programming Link: https://distinction.app/public-certificate/f5be51a8-1689-4c93-870c-00349a482bdf
 
